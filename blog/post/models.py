@@ -13,7 +13,8 @@ class Post(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
     slug = models.SlugField(editable=False, unique=True, max_length=200)
-    image = models.ImageField(upload_to='media/Post')
+    image = models.ImageField(upload_to='media/Post',null=True, blank=True)
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='Modified_by')
 
     def __str__(self):
         return self.title
