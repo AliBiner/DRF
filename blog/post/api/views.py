@@ -1,9 +1,13 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView, \
     RetrieveUpdateAPIView
 
+
 from post.api.serializers import PostSerializer
 from post.models import Post
+#default permissions
 from rest_framework.permissions import (IsAuthenticated, IsAdminUser)
+#custom permissions
+from post.api.permissions import IsOwner
 
 
 # Create your views here.
@@ -27,7 +31,7 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     lookup_field = 'slug'
-
+    permission_classes = [IsOwner, IsAdminUser]
     def perform_update(self, serializer):
         serializer.save(modified_by=self.request.user)
 
