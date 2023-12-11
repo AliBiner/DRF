@@ -21,6 +21,9 @@ class PostSerializer(serializers.ModelSerializer):
         if attrs["title"] == "oguzhan":
             raise serializers.ValidationError("Olmaz")
         return attrs
+
+
+
     #perform_create veya perform_update yerine override methodları kullanabiliriz.
     # def update(self, instance, validated_data):
     #     instance.title = validated_data.get("title", instance.title)

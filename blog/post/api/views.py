@@ -1,3 +1,4 @@
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView, \
     RetrieveUpdateAPIView
 
@@ -13,8 +14,17 @@ from post.api.permissions import IsOwner
 # Create your views here.
 
 class PostListAPIView(ListAPIView):
-    queryset = Post.objects.all()
+
     serializer_class = PostSerializer
+    #search işlemi yapılır. field ile hangi columnların içinde geçtiğine bakarak search yapar. bu işlemler searchfilter ile yapılır.
+    #OrderingFilter ile hangi column'a göre orderby işlemi yapılır. url kısmında sorgunun sonuna ? konur ve search= veya ordering= kullanılarak işlemler gerçekleştirilir. ordering işleminde ordering=- kullanımı ile tersden sıralama işlemi yapılır.
+    filter_backends = [SearchFilter,OrderingFilter]
+    search_fields = ['title','content']
+    #sorguları filtreleme işlemi
+    def get_queryset(self):
+        queryset = Post.objects.filter(draft=False)
+        return queryset
+
 
 class PostDetailAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
