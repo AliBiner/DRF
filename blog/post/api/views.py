@@ -32,6 +32,8 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):
     serializer_class = PostSerializer
     lookup_field = 'slug'
     permission_classes = [IsOwner, IsAdminUser]
+
+    # override update,create methodları yerine perform_update,create kullanabiliriz.
     def perform_update(self, serializer):
         serializer.save(modified_by=self.request.user)
 
