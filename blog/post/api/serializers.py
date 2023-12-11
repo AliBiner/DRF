@@ -4,18 +4,26 @@ from post.models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='post:detail', #view_name='namespace:name' namespace'e app_name'i veriyoruz ve name'de hangi requestin çalışmasını istiyorsak onun name'ini (api/urls) veriyoruz.
+        lookup_field='slug'
+    )
+    username = serializers.SerializerMethodField(method_name='get_username')
     class Meta:
         model = Post
         fields = [
             "user",
+            'username',
             'title',
             'content',
-            "slug",
+            "url",
             "created",
             "image",
             "modified_by"
         ]
 
+    def get_username(self,obj):
+        return str(obj.user.username)
     #validation işlemleri burada yapılır.
     def validate(self, attrs):
         if attrs["title"] == "oguzhan":
